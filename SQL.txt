@@ -1,0 +1,235 @@
+// Create table :
+create table customer(
+    User_ID number(6) not null primary key,
+    FName varchar2(10) not null,
+    LName varchar2(10) not null,
+    Email varchar2(29) not null,
+    Gender varchar2(6),
+    PhoneNo VARCHAR(10)
+    );
+
+create table Channel(
+    Channel_ID number(6) not null primary key,
+    User_ID number(6) not null,
+    Channel_name varchar2(10) not null,
+    Channel_Category varchar2(16),
+    CreatedDate date not null,
+    foreign key (User_ID)  references customer(User_ID)
+);
+
+create table Episode(
+    Episode_ID number(6) not null primary key,
+    Channel_ID number(6) not null,
+    Episode_name varchar2(14) not null,
+    Episode_no number(3) not null,
+    season number(3),
+    editor varchar2(20),
+    Download_Date date not null,
+    foreign key ( Channel_ID ) references Channel( Channel_ID )
+);
+create table speaker(
+    speaker_ID number(6) not null primary key,
+    Episode_ID number(6) not null,
+    FName varchar2(10) not null,
+    LName varchar2(10) not null,
+    PhoneNo VARCHAR(10) not null,
+    foreign key ( Episode_ID ) references Episode ( Episode_ID )
+    );
+create table Episode_speaker(
+    speaker_ID number(6) not null,
+    Episode_ID number(6) not null,
+    primary KEY (speaker_ID,Episode_ID),
+    foreign key ( speaker_ID ) references speaker ( speaker_ID ),
+    foreign key ( Episode_ID ) references Episode ( Episode_ID )
+    );
+create table Rate(
+    User_ID number(6) not null,
+    Episode_ID number(6) not null,
+    Rate number(2) not null,
+    primary KEY (User_ID,Episode_ID),
+    foreign key ( User_ID )  references customer( User_ID ),
+    foreign key ( Episode_ID ) references Episode( Episode_ID )
+    );
+create table Subscription(
+    Subscription_ID number(6) not null primary key,
+    User_ID number(6) not null,
+    Subscription_plan varchar2(8) not null,
+    status varchar2(8) not null,
+    FOREIGN KEY (User_ID) REFERENCES customer(User_ID)
+    );
+create table Payment(
+    Payment_ID number(6) not null primary key,
+    Subscription_ID number(6) not null,
+    amount DECIMAL(10,2) not null,
+    payment_date date not null,
+    FOREIGN KEY (Subscription_ID) REFERENCES Subscription(Subscription_ID)
+);
+
+// Insert records 
+/* Insert data into CUSTOMER table */
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (132465,'Lama','Hady','Lama20@gmail.com','Female','0505508976');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (549081,'Ahmad','Adel','Ahmadad@gmail.com','Male','0543838777');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (212299,'Assel','Sultan','Aseel.22@gmail.com','Male','0705524198');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (307060,'Mona','Hussani','Mona30@gmail.com','Female','0985591209');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (205530,'Hadeel','Al-mousa','Hadeelmousa@gmail.com','Female','0407772367');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (103055,'Jameel','Al-Wasse','Jameel_1@gmail.com','Male','0509906396');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (101010,'Khawlah','Saeed','Khawlah@gmail.com','Female','0984422689');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (202020,'Amnah','Jameel','Amnah@gmail.com','Female','053302762');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (303030,'Anmar','Sultan','Anmar@gmail.com','Male','0705524198');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (404040,'Salem','Mustafa','Mustafa.30@gmail.com','Male','0555509999');
+insert into CUSTOMER(USER_ID,FNAME,LNAME,EMAIL,GENDER,PHONENO) 
+Values (505050,'Arwa','Al-mousa','Arwa@gmail.com','Female','0333303371');
+
+/* Insert data into CHANNEL table */
+insert into CHANNEL (CHANNEL_ID,USER_ID,CHANNEL_NAME,CHANNEL_CATEGORY,CREATEDDATE) 
+Values (111111,132465,'Thmanyah','Eeconomic',to_date('2000-12-12','yyyy-mm-dd') );
+insert into CHANNEL (CHANNEL_ID,USER_ID,CHANNEL_NAME,CHANNEL_CATEGORY,CREATEDDATE) 
+Values (55551,549081,'Abajora','Culture',to_date('2020-4-3','yyyy-mm-dd') );
+insert into CHANNEL (CHANNEL_ID,USER_ID,CHANNEL_NAME,CHANNEL_CATEGORY,CREATEDDATE) 
+Values (222221,212299,'Minds','Educational',to_date('1999-11-1','yyyy-mm-dd') );
+insert into CHANNEL (CHANNEL_ID,USER_ID,CHANNEL_NAME,CHANNEL_CATEGORY,CREATEDDATE) 
+Values (333331,307060,'IdeaCast','Business',to_date('2011-5-3','yyyy-mm-dd') );
+insert into CHANNEL (CHANNEL_ID,USER_ID,CHANNEL_NAME,CHANNEL_CATEGORY,CREATEDDATE) 
+Values (999991,205530,'DataCast','Educational',to_date('2015-1-4','yyyy-mm-dd') );
+
+/* Insert data into EPISODE table */
+insert into EPISODE(EPISODE_ID,CHANNEL_ID,EPISODE_NAME,EPISODE_NO,SEASON,EDITOR,DOWNLOAD_DATE) 
+Values (000001,999991,'BigData',1,1,'Jaad E',to_date('2022-1-4','yyyy-mm-dd'));
+insert into EPISODE(EPISODE_ID,CHANNEL_ID,EPISODE_NAME,EPISODE_NO,SEASON,EDITOR,DOWNLOAD_DATE) 
+Values (000002,999991,'datawarehouse',2,1,'Maha E',to_date('2022-3-7','yyyy-mm-dd'));
+insert into EPISODE(EPISODE_ID,CHANNEL_ID,EPISODE_NAME,EPISODE_NO,SEASON,EDITOR,DOWNLOAD_DATE) 
+Values (000003,333331,'BusinessWars',1,1,'Mona A',to_date('2019-9-8','yyyy-mm-dd'));
+insert into EPISODE(EPISODE_ID,CHANNEL_ID,EPISODE_NAME,EPISODE_NO,SEASON,EDITOR,DOWNLOAD_DATE) 
+Values (000004,333331,'StartUp',1,2,'Dalal S',to_date('2022-3-4','yyyy-mm-dd'));
+insert into EPISODE(EPISODE_ID,CHANNEL_ID,EPISODE_NAME,EPISODE_NO,SEASON,EDITOR,DOWNLOAD_DATE) 
+Values (000005,111111,'KSA economy',1,2,'Maha D',to_date('2023-1-4','yyyy-mm-dd'));
+
+/* Insert data into SPEAKER table */
+insert into SPEAKER(SPEAKER_ID,Episode_id,FNAME,LNAME,PHONENO) 
+Values (100000,000001,'Wassem','Majid','05508795');
+insert into SPEAKER(SPEAKER_ID,Episode_id,FNAME,LNAME,PHONENO) 
+Values (200000,000002,'Suha','Sami','0638866256');
+insert into SPEAKER(SPEAKER_ID,Episode_id,FNAME,LNAME,PHONENO) 
+Values (300000,000003,'Wassem','Majid','05508795');
+insert into SPEAKER(SPEAKER_ID,Episode_id,FNAME,LNAME,PHONENO) 
+Values (400000,000004,'Amani','Ahmad','05508795');
+insert into SPEAKER(SPEAKER_ID,Episode_id,FNAME,LNAME,PHONENO) 
+Values (500000,000005,'Sultan','nano','05508795');
+
+/* Insert data into EPISODE_SPEAKER table */
+insert into EPISODE_SPEAKER(SPEAKER_ID,EPISODE_ID) 
+Values (100000,000001);
+insert into EPISODE_SPEAKER(SPEAKER_ID,EPISODE_ID) 
+Values (200000,000002);
+insert into EPISODE_SPEAKER(SPEAKER_ID,EPISODE_ID) 
+Values (300000,000003);
+insert into EPISODE_SPEAKER(SPEAKER_ID,EPISODE_ID) 
+Values (400000,000004);
+insert into EPISODE_SPEAKER(SPEAKER_ID,EPISODE_ID) 
+Values (500000,000005);
+/* Insert data into SUBSCRIPTION table */
+insert into SUBSCRIPTION(SUBSCRIPTION_ID,USER_ID,SUBSCRIPTION_PLAN,STATUS) 
+Values (999998,101010,'2-Months','Active');
+insert into SUBSCRIPTION(SUBSCRIPTION_ID,USER_ID,SUBSCRIPTION_PLAN,STATUS) 
+Values (999997,202020,'1-Months','Active');
+insert into SUBSCRIPTION(SUBSCRIPTION_ID,USER_ID,SUBSCRIPTION_PLAN,STATUS) 
+Values (999996,303030,'1-Months','Active');
+insert into SUBSCRIPTION(SUBSCRIPTION_ID,USER_ID,SUBSCRIPTION_PLAN,STATUS) 
+Values (999995,404040,'3-Months','Pending');
+insert into SUBSCRIPTION(SUBSCRIPTION_ID,USER_ID,SUBSCRIPTION_PLAN,STATUS) 
+Values (999994,505050,'5-Months','Pending');
+/* Insert data into PAYMENT table */
+insert into PAYMENT(PAYMENT_ID,SUBSCRIPTION_ID,AMOUNT,PAYMENT_DATE) 
+Values (191,999998,80.00,to_date('2023-1-4','yyyy-mm-dd'));
+insert into PAYMENT(PAYMENT_ID,SUBSCRIPTION_ID,AMOUNT,PAYMENT_DATE) 
+Values (141,999997,40.50,to_date('2023-1-4','yyyy-mm-dd'));
+insert into PAYMENT(PAYMENT_ID,SUBSCRIPTION_ID,AMOUNT,PAYMENT_DATE) 
+Values (121,999996,40.50,to_date('2023-6-5','yyyy-mm-dd'));
+insert into PAYMENT(PAYMENT_ID,SUBSCRIPTION_ID,AMOUNT,PAYMENT_DATE) 
+Values (101,999995,120.00,to_date('2023-6-3','yyyy-mm-dd'));
+insert into PAYMENT(PAYMENT_ID,SUBSCRIPTION_ID,AMOUNT,PAYMENT_DATE) 
+Values (111,999994,200.40,to_date('2022-2-22','yyyy-mm-dd'));
+/* Insert data into RATE table */
+insert into RATE(USER_ID,EPISODE_ID,RATE) 
+Values (101010,000001,1);
+insert into RATE(USER_ID,EPISODE_ID,RATE) 
+Values (202020,000005,5);
+insert into RATE(USER_ID,EPISODE_ID,RATE) 
+Values (303030,000004,4);
+insert into RATE(USER_ID,EPISODE_ID,RATE) 
+Values (404040,000003,3);
+insert into RATE(USER_ID,EPISODE_ID,RATE) 
+Values (505050,000002,5);
+//queries
+SELECT min(amount) AS min_amoun, max(amount) as max_amount, 
+ avg(amount) as average, 
+ sum(amount) as total  
+FROM payment
+
+SELECT Fname AS First_name, Lname AS Last_name, Status,amount  
+ FROM Customer C, Subscription S, payment p  
+ Where( c.user_id = s.user_id and s.Subscription_id = p.Subscription_id)  
+Order BY amount
+
+SELECT COUNT(channel_ID), channel_category 
+FROM channel 
+GROUP BY channel_category 
+ORDER BY COUNT(channel_ID) DESC
+
+Select e.episode_id, episode_name, editor FROM  
+episode e FULL OUTER JOIN rate r 
+on r.episode_id = e.episode_id 
+where rate > 3
+
+select c.user_id,fname AS First_name, Lname AS Last_name from customer c 
+where c.user_id = 
+(select s.user_id from subscription s where ( subscription_plan = '5-Months' ) )
+
+//procedures
+CREATE OR REPLACE PROCEDURE RATECHECK(
+    EpisRATE Rate.Rate%type) AS
+ 
+    CURSOR example IS
+    SELECT Rate
+    FROM Rate
+    WHERE Rate > EpisRATE;
+    BEGIN
+    FOR R_cursrec IN example LOOP
+    dbms_output.put_line (R_cursrec.Episode_ID);
+    END LOOP;
+    END RATECHECK;
+
+CREATE OR REPLACE PROCEDURE SpeakerEpisode(
+    SpeakerName SPEAKER.FNAME %type) AS
+ 
+    CURSOR example IS
+    SELECT Episode_id
+    FROM  SPEAKER
+    WHERE SpeakerName=FNAME;
+    BEGIN 
+    FOR R_cursrec IN example LOOP
+    dbms_output.put_line (R_cursrec.Episode_id);
+    END LOOP;
+    END SpeakerEpisode;
+
+
+CREATE OR REPLACE PROCEDURE UPDATEPLAN(
+S_ID SUBSCRIPTION.SUBSCRIPTION_ID%TYPE,
+NEWPLAN SUBSCRIPTION.SUBSCRIPTION_PLAN%TYPE) AS
+BEGIN
+ 
+UPDATE SUBSCRIPTION
+SET SUBSCRIPTION_PLAN = NEWPLAN
+WHERE SUBSCRIPTION_ID = S_ID;
+ 
+END UPDATEPLAN;
